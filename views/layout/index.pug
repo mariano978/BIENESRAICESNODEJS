@@ -6,7 +6,9 @@ html(lang="en")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         title Bienes Raices | #{pagina}
         link(rel="stylesheet" href="/css/app.css") 
-    body.min-h-screen.bg-gray-900
-
-    main.mx-auto.container.mt-10.px-2
+    body.min-h-screen.bg-zinc-100
+    if barra
+        include header
+    
+    main.mx-auto.container.px-2
         block contenido

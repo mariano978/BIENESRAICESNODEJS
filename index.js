@@ -5,7 +5,10 @@
 //importamos express con ECMAScript...
 
 import express from "express";
+import csrf from "csurf";
+import cookieParser from "cookie-parser";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
+import propiedadesRoutes from "./routes/propiedadesRoutes.js";
 import db from "./config/db.js";
 
 //crear la app
@@ -14,11 +17,17 @@ const app = express();
 //habilitar recibir formularios
 app.use(express.urlencoded({ extended: true }));
 
+//habilitar cookie parser
+app.use(cookieParser());
+
+//habilitar CSRF
+app.use(csrf({ cookie: true }));
+
 //conexion a la base de datos
 try {
   await db.authenticate();
   //genera las tablas si no existen
-  db.sync()
+  db.sync();
   console.log("Conexion correcta a la base de datos :D");
 } catch (error) {
   console.log(error);
@@ -35,6 +44,7 @@ app.use(express.static("public"));
 //Routing
 //use busca todas las rutas que inicien en '/'
 app.use("/auth", usuarioRoutes);
+app.use("/", propiedadesRoutes);
 
 //definir puerto y arrancarlo
 const port = 3000;
