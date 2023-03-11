@@ -10,4 +10,41 @@ block contenido
             div.mb-2
                 label.block.text-sm.text-zinc-800.mb-2.font-bold(for="titulo" ) Titulo de anuncio
                 input#titulo.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" placeholder="Titulo, ej. Casa en la playa" type="text" name="titulo")
+            div(class="md:flex gap-4 space-y-5 md:space-y-0")
+                div.mb-2(class="md:w-1/2")
+                    label.block.text-sm.text-zinc-800.mb-2.font-bold(for="categoria" ) Categoria
+                    select#categoria.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="categoria")
+                        option(value="") --Seleccione--
+                div.mb-2(class="md:w-1/2")
+                    label.block.text-sm.text-zinc-800.mb-2.font-bold(for="precio" ) Precio
+                    select#precio.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="precio")
+                        option(value="") --Seleccione--
+            div(class="md:flex gap-4 space-y-5 md:space-y-0")
+                div.mb-2(class="md:w-1/3")
+                    label.block.text-sm.text-zinc-800.mb-2.font-bold(for="habitaciones" ) Habitaciones
+                    select#habitaciones.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="habitaciones")
+                        option(value="") --Seleccione--
+                        - let n = 1;
+                            while n < 6
+                                option(value=n) #{n++}
+                div.mb-2(class="md:w-1/3")
+                    label.block.text-sm.text-zinc-800.mb-2.font-bold(for="estacionamiento" ) Estacionemiento
+                    select#estacionamiento.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="estacionamiento")
+                        option(value="") --Seleccione--
+                        - n = 1;
+                            while n < 6
+                                option(value=n) #{n++}
+                div.mb-2(class="md:w-1/3")
+                    label.block.text-sm.text-zinc-800.mb-2.font-bold(for="wc" ) Wc
+                    select#wc.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="wc")
+                        option(value="") --Seleccione--
+                        - n = 1;
+                            while n < 6
+                                option(value=n) #{n++}
 
+block scripts
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+    script(src="/js/mapa.js")
