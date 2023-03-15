@@ -1,0 +1,17 @@
+#mapa > div.leaflet-control-container > div.leaflet-bottom.leaflet-right > div {
+  display: none;
+}
+
+#mapa > div.leaflet-control-container > div.leaflet-bottom.leaflet-left > div > input{
+  border: 1px solid #121212;
+  padding: 2px;
+}
+
+#mapa > div.leaflet-control-container > div.leaflet-bottom.leaflet-left > div > div{
+    display: none;
+}
+
+.geocoder-control-suggestions {
+  background-color: white;
+  font-size: 14px;
+}

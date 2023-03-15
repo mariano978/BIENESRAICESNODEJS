@@ -1,46 +1,79 @@
 extends ../layout/index
+
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    link(rel="stylesheet" href="/css/mapa.css") 
 block contenido
     div.py-5.mt-5
         h2.text-center.text-2xl.font-extrabold.text-zinc-800= pagina
 
-    div(class=" bg-white shadow-xl py-5 px-4 rounded mx-auto max-w-xl my-10 md:px-10")
+    if errores
+        div(class="max-w-md mx-auto my-10")
+            each error in errores
+                if error.msg
+                    p.text-zinc-50.uppercase.text-xs.text-center.p-2.mb-3.font-bold.rounded-md(class="bg-red-500")= error.msg
+
+    div(class=" bg-white shadow-xl py-5 px-4 rounded mx-auto max-w-3xl my-10 md:px-10")
+
         form.space-y-5(action="" method="POST")
             input(type="hidden" name="_csrf" value= csrfToken)
             h3(class="text-lg font-medium text-zinc-800 text-center space-y-0") Informacion General 
             div.mb-2
                 label.block.text-sm.text-zinc-800.mb-2.font-bold(for="titulo" ) Titulo de anuncio
-                input#titulo.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" placeholder="Titulo, ej. Casa en la playa" type="text" name="titulo")
+                input#titulo.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" placeholder="Titulo, ej. Casa en la playa" type="text" name="titulo" value= datos.titulo ? datos.titulo : "")
             div(class="md:flex gap-4 space-y-5 md:space-y-0")
                 div.mb-2(class="md:w-1/2")
                     label.block.text-sm.text-zinc-800.mb-2.font-bold(for="categoria" ) Categoria
                     select#categoria.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="categoria")
-                        option(value="") --Seleccione--
+                        option(value="" disabled selected) --Seleccione--
+                        each categoria in categorias
+                            option(value=categoria.id selected= (datos.categoria == categoria.id) ? true : false )= categoria.nombre
+
+
                 div.mb-2(class="md:w-1/2")
                     label.block.text-sm.text-zinc-800.mb-2.font-bold(for="precio" ) Precio
                     select#precio.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="precio")
-                        option(value="") --Seleccione--
+                        option(value="" disabled selected) --Seleccione--
+                        each precio in precios
+                            option(value=precio.id selected= (datos.precio == precio.id) ? true : false )= precio.nombre
+
             div(class="md:flex gap-4 space-y-5 md:space-y-0")
                 div.mb-2(class="md:w-1/3")
                     label.block.text-sm.text-zinc-800.mb-2.font-bold(for="habitaciones" ) Habitaciones
-                    select#habitaciones.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="habitaciones")
-                        option(value="") --Seleccione--
+                    select#habitaciones.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="habitaciones" ) 
+                        option(value="" disabled selected) --Seleccione--
                         - let n = 1;
                             while n < 6
-                                option(value=n) #{n++}
+                                option(value=n selected= (datos.habitaciones == n) ? true : false ) #{n++}
                 div.mb-2(class="md:w-1/3")
-                    label.block.text-sm.text-zinc-800.mb-2.font-bold(for="estacionamiento" ) Estacionemiento
-                    select#estacionamiento.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="estacionamiento")
-                        option(value="") --Seleccione--
+                    label.block.text-sm.text-zinc-800.mb-2.font-bold(for="estacionamiento" ) Estacionamiento
+                    select#estacionamiento.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="estacionamiento" )
+                        option(value="" disabled selected) --Seleccione--
                         - n = 1;
                             while n < 6
-                                option(value=n) #{n++}
+                                option(value=n selected= (datos.estacionamiento == n) ? true : false ) #{n++}
                 div.mb-2(class="md:w-1/3")
                     label.block.text-sm.text-zinc-800.mb-2.font-bold(for="wc" ) Wc
-                    select#wc.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="wc")
-                        option(value="") --Seleccione--
+                    select#wc.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" name="wc" )
+                        option(value="" disabled selected) --Seleccione--
                         - n = 1;
                             while n < 6
-                                option(value=n) #{n++}
+                                option(value=n selected= (datos.wc == n) ? true : false ) #{n++}
+            h3(class="text-lg font-medium text-zinc-800 text-center space-y-0") Ubicacion
+            #mapa.h-96.rounded-xl.border-1.border-zinc-800
+            div(class=" bg-zinc-100 rounded w-auto p-2 flex space-between items-center")
+                p(class="calle text-zinc-700 text-center flex-1" type="text")= datos.calle ? datos.calle : "Aqui aparecerá la direccion seleccionada" 
+                div(id="ayuda_mapa")
+                    i(class="far fa-question-circle text-zinc-800 cursor-pointer")
+            input(type="hidden" name="calle" value= datos.calle ? datos.calle : "")
+            input(type="hidden" name="coordenadas" value= datos.coordenadas ? datos.coordenadas : "")
+            div.mb-2
+                label.block.text-sm.text-zinc-800.mb-2.font-bold(for="descripcion" ) Descripcion
+                textarea#descripcion.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" placeholder="Max. 200 caracteres" name="descripcion" style="resize: none; overflow:scrool; height: 120px;")= datos.descripcion ? datos.descripcion : "" 
+            input(class="w-full mt-6 bg-green-300 hover:bg-green-400 font-bold py-1.5 cursor-pointer rounded-sm" type="submit" value="Guardar")
+
+
 
 block scripts
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
@@ -48,3 +81,4 @@ block scripts
     script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
     script(src="/js/mapa.js")
+    script(src="/js/tooltip.js")
