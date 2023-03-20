@@ -5,6 +5,7 @@ export default {
   entry: {
     mapa: "./src/js/mapa.js",
     tooltip: "./src/js/tooltip.js",
+    imagenes: "./src/js/imagenes.js",
   },
   output: {
     path: path.resolve("public/js"),

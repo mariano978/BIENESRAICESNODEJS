@@ -1,0 +1,23 @@
+extends ../layout/admin
+
+block styles 
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+block contenido
+    div.py-5.mt-5
+        h2.text-center.text-2xl.font-extrabold.text-zinc-800= pagina
+
+    if errores
+        div(class="max-w-md mx-auto my-10")
+            each error in errores
+                if error.msg
+                    p.text-zinc-50.uppercase.text-xs.text-center.p-2.mb-3.font-bold.rounded-md(class="bg-red-500")= error.msg
+
+    div(class=" bg-white shadow-xl py-5 px-4 rounded mx-auto max-w-3xl my-10 md:px-10")
+
+        form.space-y-5(action=`/propiedad/agregar-imagen/${propiedad.id}` method="POST" class="dropzone rounded-md border-dashed" id="imagenes")
+            input(type="hidden" name="_csrf" value= csrfToken)
+            input(class="w-full mt-6 bg-green-300 hover:bg-green-400 font-bold py-1.5 cursor-pointer rounded-sm" type="submit" id ="btnUpload" value="Publicar propiedad")
+
+block scripts 
+    script(src="/js/imagenes.js") 

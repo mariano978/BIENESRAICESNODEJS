@@ -11,6 +11,8 @@ import usuarioRoutes from "./routes/usuarioRoutes.js";
 import propiedadesRoutes from "./routes/propiedadesRoutes.js";
 import db from "./config/db.js";
 
+
+
 //crear la app
 const app = express();
 

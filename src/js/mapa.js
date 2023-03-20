@@ -56,6 +56,7 @@
   }
 
   function obtenerCalles() {
+    console.log("obteniendo calles");
     setTimeout(() => {
       geocodeService
         .reverseGeocode()

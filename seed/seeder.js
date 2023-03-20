@@ -1,8 +1,9 @@
 //seeds
 import categorias from "./catetgorias.js";
 import precios from "./precio.js";
+import usuarios from "./usuario.js";
 //models
-import { Categoria, Precio } from "../models/index.js";
+import { Categoria, Precio, Usuario } from "../models/index.js";
 
 //db
 import db from "../config/db.js";
@@ -17,6 +18,7 @@ const importarDatos = async () => {
     await Promise.all([
       Categoria.bulkCreate(categorias),
       Precio.bulkCreate(precios),
+      Usuario.bulkCreate(usuarios),
     ]);
 
     console.log("Datos importados correctamente");
@@ -39,6 +41,9 @@ const eliminarDatos = () => {
     })
     .then(() => {
       return Precio.truncate();
+    })
+    .then(() => {
+      return Usuario.truncate();
     })
     .then(() => {
       return db.query("SET FOREIGN_KEY_CHECKS = 1");

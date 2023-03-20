@@ -1,4 +1,4 @@
-extends ../layout/index
+extends ../layout/admin
 
 block styles
     link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
@@ -71,7 +71,7 @@ block contenido
             div.mb-2
                 label.block.text-sm.text-zinc-800.mb-2.font-bold(for="descripcion" ) Descripcion
                 textarea#descripcion.shadow-highlight.w-full.px-3.py-1.border.rounded.border-none.placeholder-gray-700.text-zinc-800(class="bg-zinc-100" placeholder="Max. 200 caracteres" name="descripcion" style="resize: none; overflow:scrool; height: 120px;")= datos.descripcion ? datos.descripcion : "" 
-            input(class="w-full mt-6 bg-green-300 hover:bg-green-400 font-bold py-1.5 cursor-pointer rounded-sm" type="submit" value="Guardar")
+            input(class="w-full mt-6 bg-green-300 hover:bg-green-400 font-bold py-1.5 cursor-pointer rounded-sm" type="submit" value="Añadir Imagen")
 
 
 

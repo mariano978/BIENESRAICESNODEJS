@@ -79,6 +79,7 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function obtenerCalles() {
+    console.log("obteniendo calles");
     setTimeout(() => {
       geocodeService
         .reverseGeocode()

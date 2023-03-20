@@ -11,6 +11,7 @@ const formularioLogin = (req, res) => {
   res.render("auth/login", {
     pagina: "Iniciar Sesion",
     csrfToken: req.csrfToken(),
+    errores: {}
   });
 };
 
@@ -106,6 +107,7 @@ const formularioRegistro = (req, res) => {
   res.render("auth/registro", {
     pagina: "Crear Cuenta",
     csrfToken: req.csrfToken(),
+    errores: {}
   });
 };
 
@@ -187,6 +189,7 @@ const formulariOlvidePassword = (req, res) => {
   res.render("auth/recuperar-password", {
     pagina: "Recuperar password",
     csrfToken: req.csrfToken(),
+    errores: {}
   });
 };
 
