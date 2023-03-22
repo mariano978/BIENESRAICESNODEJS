@@ -108,7 +108,7 @@ const agregarImagen = async (req, res) => {
   });
 };
 
-const guardarImagen = async (req, res) => {
+const guardarImagen = async (req, res, next) => {
   const { id: propiedadId } = req.params;
 
   //validar propiedad
@@ -142,16 +142,18 @@ const guardarImagen = async (req, res) => {
   console.log(chalk.red("Subiendo..."));
 
   try {
+    console.log(chalk.cyan(`req.files => + ${stringObj(req.files)}`));
     //almacenar imagen y publicar propiedad
-    console.log(chalk.bgBlue.white(`Req->`));
-    console.log(req.file);
+    // if (propiedad.imagen) {
+    //   propiedad.imagen = [propiedad.imagen, req.file.filename].join(",");
+    // } else {
+    //   propiedad.imagen = req.file.filename;
+    // }
 
-    propiedad.imagen = req.file.filename;
-    propiedad.publicado = 1;
+    //propiedad.publicado = 1;
     //guardamos en la BD
-    await propiedad.save();
-    
-
+    //await propiedad.save();
+    //next();
   } catch (error) {
     console.log(error);
   }

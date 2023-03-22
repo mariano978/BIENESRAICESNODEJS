@@ -17,7 +17,7 @@ block contenido
 
         form.space-y-5(action=`/propiedad/agregar-imagen/${propiedad.id}` method="POST" class="dropzone rounded-md border-dashed" id="imagenes")
             input(type="hidden" name="_csrf" value= csrfToken)
-            input(class="w-full mt-6 bg-green-300 hover:bg-green-400 font-bold py-1.5 cursor-pointer rounded-sm" type="submit" id ="btnUpload" value="Publicar propiedad")
+        button(class="w-full mt-6 bg-green-300 hover:bg-green-400 font-bold py-1.5 cursor-pointer rounded-sm" type="button" id ="button_upload") Publicar propiedad
 
 block scripts 
     script(src="/js/imagenes.js") 

@@ -42,7 +42,7 @@ router.post(
   "/propiedad/agregar-imagen/:id",
   protegerRuta,
   //le pasamos el name del form que tiene la imagen a guardar
-  upload.single("imagen"),
+  upload.array("imagen", 3),
   guardarImagen
 );
 
