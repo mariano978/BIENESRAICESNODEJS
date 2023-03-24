@@ -15,8 +15,8 @@ block contenido
 
     div(class=" bg-white shadow-xl py-5 px-4 rounded mx-auto max-w-3xl my-10 md:px-10")
 
-        form.space-y-5(action=`/propiedad/agregar-imagen/${propiedad.id}` method="POST" class="dropzone rounded-md border-dashed" id="imagenes")
-            input(type="hidden" name="_csrf" value= csrfToken)
+        form.space-y-5(action=`/propiedad/agregar-imagen/${propiedad.id}` method="POST" class="dropzone rounded-md border-dashed" id="my-dropzone")
+            input(type="hidden" name="_csrf" value= csrfToken)  
         button(class="w-full mt-6 bg-green-300 hover:bg-green-400 font-bold py-1.5 cursor-pointer rounded-sm" type="button" id ="button_upload") Publicar propiedad
 
 block scripts 

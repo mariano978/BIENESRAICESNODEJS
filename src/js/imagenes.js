@@ -1,15 +1,13 @@
 import Dropzone from "dropzone";
-import { stringObj, chalk } from "../../helpers/logs.js";
 
 const token = document.querySelector("[name=_csrf]").value;
 
-const myDropzone = new Dropzone("#imagenes", {
+const myDropzone = new Dropzone("#my-dropzone", {
   dictDefaultMessage: "Sube tus imagenes aqui...",
   addRemoveLinks: true,
   maxFiles: 3,
   maxFilesize: 5,
   acceptedFiles: ".png,.jpg,.jpng",
-  parallelUploads: 3,
   autoProcessQueue: false, //evita que se suba en automatico
   dictRemoveFile: "Borrar archivo 🗑️",
   dictMaxFilesExceeded: "La cantidad max. son 3 archivos",
@@ -28,11 +26,11 @@ const myDropzone = new Dropzone("#imagenes", {
       dropzone.processQueue();
     });
 
-    // dropzone.on("queuecomplete", function () {
-    //   if (dropzone.getActiveFiles().length == 0) {
-    //     window.location.href = "/mis-propiedades";
-    //   }
-    // });
+    dropzone.on("queuecomplete", function () {
+      if (dropzone.getActiveFiles().length == 0) {
+        window.location.href = "/mis-propiedades";
+      }
+    });
   },
 });
 

@@ -4,10 +4,25 @@ import { chalk, stringObj } from "../helpers/logs.js";
 
 const log = console.log;
 
-const admin = (req, res) => {
+const admin = async (req, res) => {
+  const { id } = req.usuario;
+
+  const propiedades = await Propiedad.findAll({
+    where: {
+      usuarioId: id,
+    },
+    //incluye el cruce de informacion con la tabla de categorias
+    include: [
+      { model: Categoria, as: "categoria" },
+      { model: Precio, as: "precio" },
+    ],
+  });
+
+  console.log(chalk.blueBright(`Propiedades: ${stringObj(propiedades)}}`));
+
   res.render("propiedades/admin", {
     pagina: "Mis Propiedades",
-    barra: true,
+    propiedades,
   });
 };
 
@@ -82,15 +97,11 @@ const agregarImagen = async (req, res) => {
     return res.redirect("/mis-propiedades");
   }
 
-  log(chalk.yellow(`Propiedad: ${stringObj(propiedad.dataValues)}`));
-
   //validar que la propiedad no este publicada
   if (propiedad.publicado) {
     log(chalk.red("Propiedad ya publicada"));
     return res.redirect("/mis-propiedades");
   }
-
-  log(chalk.yellow(`Usuario: ${stringObj(req.usuario)}`));
 
   //validar que la propiedad pertenezca al usuario
   if (propiedad.usuarioId.toString() !== req.usuario.id.toString()) {
@@ -119,15 +130,11 @@ const guardarImagen = async (req, res, next) => {
     return res.redirect("/mis-propiedades");
   }
 
-  log(chalk.yellow(`Propiedad: ${stringObj(propiedad.dataValues)}`));
-
   //validar que la propiedad no este publicada
   if (propiedad.publicado) {
     log(chalk.red("Propiedad ya publicada"));
     return res.redirect("/mis-propiedades");
   }
-
-  log(chalk.yellow(`Usuario: ${stringObj(req.usuario)}`));
 
   //validar que la propiedad pertenezca al usuario
   if (propiedad.usuarioId.toString() !== req.usuario.id.toString()) {
@@ -135,25 +142,15 @@ const guardarImagen = async (req, res, next) => {
     return res.redirect("/mis-propiedades");
   }
 
-  //si es su propiedad...
-  log(chalk.green("Propiedad válida"));
-
   //ya podemos subir
   console.log(chalk.red("Subiendo..."));
 
   try {
-    console.log(chalk.cyan(`req.files => + ${stringObj(req.files)}`));
-    //almacenar imagen y publicar propiedad
-    // if (propiedad.imagen) {
-    //   propiedad.imagen = [propiedad.imagen, req.file.filename].join(",");
-    // } else {
-    //   propiedad.imagen = req.file.filename;
-    // }
+    propiedad.imagen = req.file.filename;
+    propiedad.publicado = 1;
 
-    //propiedad.publicado = 1;
-    //guardamos en la BD
-    //await propiedad.save();
-    //next();
+    await propiedad.save();
+    next();
   } catch (error) {
     console.log(error);
   }
