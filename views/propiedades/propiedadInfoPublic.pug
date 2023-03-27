@@ -1,0 +1,16 @@
+extends ../layout/public
+block contenido
+    div.py-5.mt-5
+        h2.text-center.text-2xl.font-extrabold.text-zinc-800= pagina
+
+        div 
+            a(href="" class="font-bold text-zinc-600 text-sm") Categoria:
+                span(class="font-normal")= propiedad.categoria.nombre
+
+        div(class="md:flex gap-5 mt-2")
+            div(class="md:w-2/3 bg-zinc-50 shadow rounded-md p-10")  
+                img(src=`/uploads/${propiedad.imagen}`, alt="imagen_propiedad" class="rounded-md")
+                .px-5.py-10     
+                    p.text-zinc-800= propiedad.descripcion
+
+            div 2

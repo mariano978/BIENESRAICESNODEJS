@@ -1,6 +1,8 @@
 import { Precio, Categoria, Propiedad } from "../models/Index.js";
-import { validationResult } from "express-validator";
 import { chalk, stringObj } from "../helpers/logs.js";
+import { check, validationResult } from "express-validator";
+import { unlink } from "node:fs/promises";
+import path from "path";
 
 const log = console.log;
 
@@ -18,11 +20,10 @@ const admin = async (req, res) => {
     ],
   });
 
-  console.log(chalk.blueBright(`Propiedades: ${stringObj(propiedades)}}`));
-
   res.render("propiedades/admin", {
     pagina: "Mis Propiedades",
     propiedades,
+    csrfToken: req.csrfToken(),
   });
 };
 
@@ -156,4 +157,177 @@ const guardarImagen = async (req, res, next) => {
   }
 };
 
-export { admin, formularioCrear, guardar, agregarImagen, guardarImagen };
+const formularioEditar = async (req, res) => {
+  try {
+    const propiedadId = req.params.id;
+    const currentUserId = req.usuario.id;
+    const propiedad = await getPropiedadById(propiedadId, currentUserId);
+    const { categorias, precios } = await getCategoriasAndPrecios();
+
+    res.render("propiedades/editar", {
+      pagina: "Editar propiedad",
+      propiedad,
+      categorias,
+      precios,
+      csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    console.error(error);
+    res.redirect("/mis-propiedades");
+  }
+};
+
+const getPropiedadById = async (propiedadId, currentUserId) => {
+  const propiedad = await Propiedad.findOne({ where: { id: propiedadId } });
+  if (!propiedad || propiedad.usuarioId !== currentUserId) {
+    throw new Error("La propiedad no existe o no pertenece al usuario actual");
+  }
+  return propiedad;
+};
+
+const getCategoriasAndPrecios = async () => {
+  try {
+    const [categorias, precios] = await Promise.all([
+      Categoria.findAll(),
+      Precio.findAll(),
+    ]);
+    return { categorias, precios };
+  } catch (error) {
+    throw new Error("No se pudieron obtener las categorías y los precios");
+  }
+};
+
+const guardarEdicion = async (req, res) => {
+  const addressForError = "mis-propiedades";
+  const resultValidation = validationResult(req);
+  const propertyFormData = req.body;
+
+  if (resultValidation.isEmpty()) {
+    const currentPropetyId = req.params.id;
+    const currentUserId = req.usuario.id;
+
+    const currentProperty = await getPropiedadById(
+      currentPropetyId,
+      currentUserId
+    ).catch((error) => {
+      console.log(error.message);
+      res.redirect(addressForError);
+    });
+
+    await currentProperty
+      .update({
+        ...propertyFormData,
+        categoriaId: propertyFormData.categoria,
+        precioId: propertyFormData.precio,
+      })
+      .then(() => {
+        res.redirect(addressForError);
+      });
+  }
+
+  const { categorias, precios } = await getCategoriasAndPrecios().catch(
+    (error) => {
+      console.log(error);
+      res.redirect(addressForError);
+    }
+  );
+
+  res.render("propiedades/editar", {
+    pagina: "Editar propiedad",
+    categorias,
+    precios,
+    propiedad: {
+      ...propertyFormData,
+      categoriaId: propertyFormData.categoria,
+      precioId: propertyFormData.precio,
+    },
+    errores: resultValidation.array(),
+    csrfToken: req.csrfToken(),
+  });
+};
+
+const validarFormPropiedad = async (req, res, next) => {
+  await Promise.all([
+    check("titulo").notEmpty().withMessage("Falta titulo").run(req),
+    check("descripcion")
+      .notEmpty()
+      .withMessage("Falta descripcion")
+      .isLength({ max: 200 })
+      .withMessage("La descripcion es muy larga")
+      .run(req),
+    check("categoria")
+      .isNumeric()
+      .withMessage("Selecciona una categoria")
+      .run(req),
+    check("precio").isNumeric().withMessage("Selecciona un precio").run(req),
+    check("habitaciones")
+      .isNumeric()
+      .withMessage("Selecciona cantidad de habitaciones")
+      .run(req),
+    check("estacionamiento")
+      .isNumeric()
+      .withMessage("Selecciona cantidad de estacionamientos")
+      .run(req),
+    check("wc")
+      .isNumeric()
+      .withMessage("Selecciona cantidad de baños")
+      .run(req),
+    check("coordenadas")
+      .notEmpty()
+      .withMessage("Selecciona una calle")
+      .run(req),
+  ]);
+
+  next();
+};
+
+const eliminarPropiedad = async (req, res) => {
+  const addressMain = "/mis-propiedades";
+  const currentPropetyId = req.params.id;
+  const currentUserId = req.usuario.id;
+
+  const currentProperty = await getPropiedadById(
+    currentPropetyId,
+    currentUserId
+  ).catch((error) => {
+    console.log(error);
+    res.redirect(addressMain);
+  });
+
+  await currentProperty
+    .destroy()
+    .then(() => {
+      unlink(`public/uploads/${currentProperty.imagen}`).catch((error) => {
+        console.log(error);
+      });
+      res.redirect(addressMain);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect(addressMain);
+    });
+};
+
+const propiedadPublic = async (req, res) => {
+  const propiedadId = req.params.id;
+  const propiedad = await Propiedad.findByPk(propiedadId, {
+    include: ["categoria", "precio"],
+  });
+  res.render("propiedades/propiedadInfoPublic", {
+    propiedad,
+    pagina: propiedad.titulo,
+  });
+};
+
+export {
+  admin,
+  formularioCrear,
+  guardar,
+  agregarImagen,
+  guardarImagen,
+  formularioEditar,
+  guardarEdicion,
+  validarFormPropiedad,
+  eliminarPropiedad,
+  propiedadPublic,
+};

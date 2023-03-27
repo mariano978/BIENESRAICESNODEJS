@@ -13,9 +13,9 @@ block contenido
         h2.text-center.text-2xl.font-extrabold.text-zinc-800= pagina
 
         if errores
-        div(class="max-w-md mx-auto my-10")
-            each error in errores
-                p.text-zinc-50.uppercase.text-xs.text-center.p-2.mb-3.font-bold.rounded-md(class="bg-red-500")= error.msg
+            div(class="max-w-md mx-auto my-10")
+                each error in errores
+                    p.text-zinc-50.uppercase.text-xs.text-center.p-2.mb-3.font-bold.rounded-md(class="bg-red-500")= error.msg
 
 
         .mt-8.mx-auto.max-w-md.rounded-lg(class="bg-white")
