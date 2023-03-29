@@ -310,13 +310,29 @@ const eliminarPropiedad = async (req, res) => {
 
 const propiedadPublic = async (req, res) => {
   const propiedadId = req.params.id;
-  const propiedad = await Propiedad.findByPk(propiedadId, {
-    include: ["categoria", "precio"],
-  });
+
+  const propiedad = await getPublicPropertyData(propiedadId);
+
+  if (!propiedad) {
+    res.redirect("/auth/login");
+  }
+
   res.render("propiedades/propiedadInfoPublic", {
     propiedad,
     pagina: propiedad.titulo,
   });
+};
+
+const getPublicPropertyData = async (propiedadId) => {
+  const propiedad = await Propiedad.findByPk(propiedadId, {
+    include: ["categoria", "precio"],
+  });
+
+  if (!propiedad) {
+    return false;
+  }
+
+  return propiedad;
 };
 
 export {
