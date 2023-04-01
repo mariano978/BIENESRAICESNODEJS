@@ -7,6 +7,13 @@ import path from "path";
 const log = console.log;
 
 const admin = async (req, res) => {
+  const { pagina: numCurrentPage } = req.query;
+  console.log(chalk.yellow(`numCurrentPage: ${numCurrentPage}`));
+
+  if (!validateFormatNumPage(numCurrentPage)) {
+    return res.redirect("/mis-propiedades?pagina=1");
+  }
+
   const { id } = req.usuario;
 
   const propiedades = await Propiedad.findAll({
@@ -25,6 +32,12 @@ const admin = async (req, res) => {
     propiedades,
     csrfToken: req.csrfToken(),
   });
+};
+
+const validateFormatNumPage = (num) => {
+  const regularExpresion = /[0-9]/;
+
+  return regularExpresion.test(num);
 };
 
 //formulario de crear
