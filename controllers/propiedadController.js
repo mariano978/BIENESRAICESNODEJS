@@ -7,23 +7,24 @@ import path from "path";
 const log = console.log;
 
 const admin = async (req, res) => {
-  const { id } = req.usuario;
+  const { id: usuarioId } = req.usuario;
 
-  const propiedades = await Propiedad.findAll({
-    where: {
-      usuarioId: id,
-    },
-    //incluye el cruce de informacion con la tabla de categorias
-    include: [
-      { model: Categoria, as: "categoria" },
-      { model: Precio, as: "precio" },
-    ],
-  });
+  const propiedades = await getAllUserPropertiesWithCategoryAndPrices(usuarioId);
 
   res.render("propiedades/admin", {
     pagina: "Mis Propiedades",
     propiedades,
     csrfToken: req.csrfToken(),
+  });
+};
+
+const getAllUserPropertiesWithCategoryAndPrices = async (userId) => {
+  return await Propiedad.findAll({
+    where: { userId },
+    include: [
+      { model: Categoria, as: "categoria" },
+      { model: Precio, as: "precio" },
+    ],
   });
 };
 
