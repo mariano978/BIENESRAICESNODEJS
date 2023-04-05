@@ -8,10 +8,16 @@ import { generarId, generarJWT } from "../helpers/tokens.js";
 import { emailOlvidePassword, emailRegistro } from "../helpers/email.js";
 
 const formularioLogin = (req, res) => {
+  const errores = [];
+  const existError = req.query.error;
+  if (existError) {
+    errores.push({ msg: "Ha ocurrido algún error, intente más tarde." });
+  }
+  console.log(errores);
   res.render("auth/login", {
     pagina: "Iniciar Sesion",
     csrfToken: req.csrfToken(),
-    errores: {}
+    errores,
   });
 };
 
@@ -107,7 +113,7 @@ const formularioRegistro = (req, res) => {
   res.render("auth/registro", {
     pagina: "Crear Cuenta",
     csrfToken: req.csrfToken(),
-    errores: {}
+    errores: {},
   });
 };
 
@@ -189,7 +195,7 @@ const formulariOlvidePassword = (req, res) => {
   res.render("auth/recuperar-password", {
     pagina: "Recuperar password",
     csrfToken: req.csrfToken(),
-    errores: {}
+    errores: {},
   });
 };
 
