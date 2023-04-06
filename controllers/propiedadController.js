@@ -2,30 +2,70 @@ import { Precio, Categoria, Propiedad } from "../models/Index.js";
 import { chalk, stringObj } from "../helpers/logs.js";
 import { check, validationResult } from "express-validator";
 import { unlink } from "node:fs/promises";
-import path from "path";
+import Paginacion from "../helpers/Paginacion.js";
 
 const log = console.log;
 
 const admin = async (req, res) => {
-  const { id: usuarioId } = req.usuario;
+  const { id: userId } = req.usuario;
+  const cantPropiedades = await countPropertiesUser(userId);
 
-  const propiedades = await getAllUserPropertiesWithCategoryAndPrices(usuarioId);
+  const { pagina: currentPageNumber } = req.query;
+  const paginacion = new Paginacion(cantPropiedades);
+  paginacion.setCurrentPage(currentPageNumber);
+
+  if (!paginacion.validateNumOfPage(currentPageNumber)) {
+    return res.redirect("/mis-propiedades?pagina=1");
+  }
+
+  const propiedades = await findUserPropertiesByPage(userId, paginacion);
 
   res.render("propiedades/admin", {
     pagina: "Mis Propiedades",
     propiedades,
     csrfToken: req.csrfToken(),
+    cantEnlacesPaginas: paginacion.getAmountOfPages(),
+    currentPageNumber,
+    limit: paginacion.getLimit(),
+    offset: paginacion.getOffset(),
+    cantPropiedades,
   });
 };
 
-const getAllUserPropertiesWithCategoryAndPrices = async (userId) => {
-  return await Propiedad.findAll({
-    where: { userId },
+const findUserPropertiesByPage = async (userId, paginator) => {
+  const config = {
+    limit: paginator.getLimit(),
+    offset: paginator.getOffset(),
+    where: {
+      usuarioId: userId,
+    },
     include: [
       { model: Categoria, as: "categoria" },
       { model: Precio, as: "precio" },
     ],
-  });
+  };
+
+  try {
+    const propiedades = await Propiedad.findAll(config);
+    return propiedades;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const countPropertiesUser = async (userId) => {
+  const config = {
+    where: {
+      usuarioId: userId,
+    },
+  };
+
+  try {
+    const cuenta = await Propiedad.count(config);
+    return cuenta;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 //formulario de crear
