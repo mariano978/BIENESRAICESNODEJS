@@ -20,7 +20,7 @@ const admin = async (req, res) => {
 
   const propiedades = await findUserPropertiesByPage(userId, paginacion);
 
-  res.render("propiedades/admin", {
+  res.render("propiedades/admin", { 
     pagina: "Mis Propiedades",
     propiedades,
     csrfToken: req.csrfToken(),
