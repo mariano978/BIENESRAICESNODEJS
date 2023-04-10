@@ -7,6 +7,7 @@ export default {
     tooltip: "./src/js/tooltip.js",
     imagenes: "./src/js/imagenes.js",
     mapaFijo: "./src/js/mapaFijo.js",
+    inicio: "./src/js/inicio.js",
   },
   output: {
     path: path.resolve("public/js"),

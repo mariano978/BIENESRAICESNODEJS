@@ -1,6 +1,6 @@
 class Paginacion {
   constructor(amountRecords) {
-    this.currentPageNumber = 1;
+    this.currentPageNumber = 1; //default
     this.offset = 0;
     this.limit = parseInt(process.env.LIMIT_PAGINATION);
     this.amountRecords = amountRecords;
@@ -28,10 +28,10 @@ class Paginacion {
     return (this.offset = this.currentPageNumber * this.limit - this.limit);
   }
 
-  validateNumOfPage(num) {
+  validateNumOfPage() {
     const regularExpresion = /^[0-9]$/;
 
-    return regularExpresion.test(num) && num >= 1 && num <= this.amountPages;
+    return regularExpresion.test(this.currentPageNumber);
   }
 }
 

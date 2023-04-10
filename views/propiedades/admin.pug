@@ -7,6 +7,14 @@ block contenido
 
         if propiedades.length
             //- div(class=" bg-zinc-50 rounded-sm shadow")
+            div(class="bg-zinc-50 px-4 py-4 flex items-center justify-between sm:px-6 mt-4 mb-4")
+                div(class="sm:hidden flex justify-between flex-1 items-center truncate")
+                    - var nextPage = +currentPageNumber + 1
+                    - var prevPage = +currentPageNumber - 1
+                        a(href=`/mis-propiedades?pagina=${prevPage}` class=` ${prevPage == 0 ? "opacity-0 pointer-events-none" : ""} bg-zinc-50 border hover:bg-blue-100 px-4 py-2 rounded font-bold text-zinc-800`) Anterior
+                        p(class="text-zinc-500 text-sm inline-block") #{currentPageNumber} / #{cantEnlacesPaginas} 
+                        a(href=`/mis-propiedades?pagina=${nextPage}` class=` ${nextPage > cantEnlacesPaginas ? "opacity-0 pointer-events-none" : ""} bg-zinc-50 border hover:bg-blue-100 px-4 py-2 rounded font-bold text-zinc-800`) Siguiente
+
             ul(class=" gap-10") 
                 each propiedad in propiedades 
                     li
@@ -28,16 +36,18 @@ block contenido
                                 form(action=`/propiedad/eliminar/${propiedad.id}` method="POST")
                                     input(type="hidden" name="_csrf" value= csrfToken)
                                     input(type="submit" class="w-full p-2 md:py-1 text-xs leading-5 font-semibold rounded-sm cursor-pointer bg-red-200 text-red-600" value="Eliminar")
-                div(class="bg-zinc-50 px-4 py-4 flex items-center justify-between sm:px-6 mt-4 mb-4")
-                    div(class="sm:flex sm:flex-1 sm:items-center sm:justify-between")
-                        p(class="text-zinc-700 text-sm gap-2 ") Mostrando  
-                            span(class=" font-medium") #{offset + 1} al 
-                            span(class=" font-medium") #{limit + offset} de 
-                            span(class=" font-medium") #{cantPropiedades} 
-                    div
-                        nav(class="relative z-0 inline-flex rounded-md shadow-md")
-                            - var n = 1 
-                                while n <= cantEnlacesPaginas
-                                    a(href=`/mis-propiedades?pagina=${n}` class=`${currentPageNumber == n ? "bg-blue-50 border-indigo-400 text-indigo-500" : "hover:bg-zinc-100 hover:border-zinc-300 hover:text-zinc-900"} relative inline-flex items-center px-4 py-2 border text-sm font-medium`) #{n++}
+                if cantEnlacesPaginas > 0
+                    div(class="bg-zinc-50 px-4 py-4 flex items-center justify-between sm:px-6 mt-4 mb-4")
+                        div(class="hidden sm: sm:flex sm:flex-1 sm:items-center sm:justify-between")
+                            p(class="text-zinc-700 text-sm gap-2 ") Mostrando  
+                                span(class=" font-medium") #{offset + 1} al 
+                                span(class=" font-medium") #{total < limit + offset ? total : limit + offset} de 
+                                span(class=" font-medium") #{cantPropiedades} 
+
+                        div(class="hidden sm:block")
+                            nav(class="relative z-0 inline-flex rounded-md shadow-md")
+                                - var n = 1 
+                                    while n <= cantEnlacesPaginas
+                                        a(href=`/mis-propiedades?pagina=${n}` class=`${currentPageNumber == n ? "bg-blue-50 border-indigo-400 text-indigo-500" : "hover:bg-zinc-100 hover:border-zinc-300 hover:text-zinc-900"} relative inline-flex items-center px-4 py-2 border text-sm font-medium`) #{n++}
         else 
             p.text-center No Hay Propiedades

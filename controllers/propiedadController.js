@@ -1,4 +1,4 @@
-import { Precio, Categoria, Propiedad } from "../models/Index.js";
+
 import { chalk, stringObj } from "../helpers/logs.js";
 import { check, validationResult } from "express-validator";
 import { unlink } from "node:fs/promises";
@@ -7,19 +7,21 @@ import Paginacion from "../helpers/Paginacion.js";
 const log = console.log;
 
 const admin = async (req, res) => {
+  
   const { id: userId } = req.usuario;
   const cantPropiedades = await countPropertiesUser(userId);
 
   const { pagina: currentPageNumber } = req.query;
   const paginacion = new Paginacion(cantPropiedades);
+  
   paginacion.setCurrentPage(currentPageNumber);
 
-  if (!paginacion.validateNumOfPage(currentPageNumber)) {
+  if (!paginacion.validateNumOfPage()) {
     return res.redirect("/mis-propiedades?pagina=1");
   }
-
+  
   const propiedades = await findUserPropertiesByPage(userId, paginacion);
-
+  
   res.render("propiedades/admin", { 
     pagina: "Mis Propiedades",
     propiedades,
@@ -33,6 +35,7 @@ const admin = async (req, res) => {
 };
 
 const findUserPropertiesByPage = async (userId, paginator) => {
+  
   const config = {
     limit: paginator.getLimit(),
     offset: paginator.getOffset(),

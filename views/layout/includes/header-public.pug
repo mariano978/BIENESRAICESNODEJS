@@ -1,8 +1,18 @@
 header(class=" bg-zinc-900")
     .container.mx-auto.flex.justify-between.items-center
-        h1.text-2xl.text-zinc-50.font-extrabold.text-center Bienes
-            span.font-normal Raices
+        a(href="/")
+            h1.text-2xl.text-zinc-50.font-extrabold.text-center Bienes
+                span.font-normal Raices
 
-        nav(class="my-5 text-sm md:flex md:items-center font-bold text-zinc-50 md:gap-3 hidden " )    
-            a(href="" class="hover:text-green-300") Publicaciones
-            a(href="" class="bg-zinc-800 p-2 rounded hover:text-green-300") Crear Cuenta
+        nav(class="my-5 text-sm md:flex md:items-center font-bold text-zinc-50 md:gap-3 hidden " )
+            a(href="/auth/registro" class="bg-zinc-800 p-2 rounded hover:text-green-300") Crear Cuenta
+            a(href="/auth/login" class=" hover:text-green-300") Iniciar Sesion
+
+div(class="bg-green-300 hidden lg:block")
+    div(class="container mx-auto flex justify-evenly ")
+        a(href="/categorias/1" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Casas
+        a(href="/categorias/2" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Departamentos
+        a(href="/categorias/3" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Monoambientes
+        a(href="/categorias/4" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Almacenes
+        a(href="/categorias/5" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Terrenos
+        a(href="/categorias/6" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Cabañas
