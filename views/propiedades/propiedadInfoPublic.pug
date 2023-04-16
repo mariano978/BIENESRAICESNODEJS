@@ -3,7 +3,7 @@ extends ../layout/public
 block styles
     link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    link(rel="stylesheet" href="/css/mapa.css") 
+
 
 block contenido
     div.py-5.mt-5
@@ -13,7 +13,7 @@ block contenido
             a(href="" class="font-bold text-zinc-600 text-sm") Categoria:
                 span(class="font-normal")= propiedad.categoria.nombre
 
-        div(class="lg:flex gap-6 mt-2 space-y-10")
+        div(class="lg:flex gap-6 mt-2")
             div(class="lg:w-2/3 bg-zinc-50 shadow rounded-md")  
                 img(src=`/uploads/${propiedad.imagen}`, alt="imagen_propiedad")
                 .px-10.py-10.space-y-5     
@@ -29,7 +29,7 @@ block contenido
                         p(class=" text-zinc-400 font-bold tracking-wider text-xs" ) Precio 
                             span(class="block font-extrabold text-zinc-800 text-lg")= propiedad.precio.nombre
 
-            div(class="lg:w-1/3 space-y-5")
+            div(class="lg:w-1/3 mt-0")
                 h3(class=" text-center font-bold text-zinc-800 text-2xl") Ubicacion
                 #mapa.h-96.rounded-xl.border-1.border-zinc-800
                 p(class="hidden" id="coordenadas")= propiedad.coordenadas

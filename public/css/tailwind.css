@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* modificaciones a leaflet */
+.leaflet-container a {
+  background-color: #86efac;
+  color: #27272a !important;
+  border-radius: 0.2rem;
+}
+
+.leaflet-container a:hover {
+  background-color: #4ade80;
+}
+
+.leaflet-popup-content p {
+  margin: 0.5rem 0 !important;
+}
+
+.leaflet-popup-content p.text-green-400 {
+  color: #86efac;
+}
+
+div.leaflet-control-container > div.leaflet-bottom.leaflet-right > div {
+  display: none;
+}
+
+div.leaflet-control-container > div.leaflet-bottom.leaflet-left > div > input {
+  border: 1px solid #121212;
+  padding: 2px;
+}
+
+div.leaflet-control-container > div.leaflet-bottom.leaflet-left > div > div {
+  display: none;
+}
+
+.geocoder-control-suggestions {
+  background-color: white;
+  font-size: 14px;
+}

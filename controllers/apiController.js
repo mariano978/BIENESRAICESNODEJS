@@ -6,6 +6,8 @@ const propiedades = async (req, res) => {
       { model: Categoria, as: "categoria" },
       { model: Precio, as: "precio" },
     ],
+    // order: [["createdAt", "DESC"]],
+    // limit: 5
   });
 
   res.json(propiedades);

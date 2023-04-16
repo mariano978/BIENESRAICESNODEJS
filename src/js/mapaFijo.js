@@ -1,4 +1,5 @@
-(function () {
+import { chalk, stringObj } from "../../helpers/logs.js";
+(async function () {
   let coord = {
     lat: 0,
     lng: 0,
