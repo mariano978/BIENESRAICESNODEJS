@@ -19,3 +19,4 @@ import { chalk, stringObj } from "../../helpers/logs.js";
 
   const marker = new L.marker(coord).addTo(mapa);
 })();
+

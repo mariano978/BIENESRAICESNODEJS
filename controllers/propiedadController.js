@@ -44,6 +44,7 @@ const findUserPropertiesByPage = async (userId, paginator) => {
       { model: Categoria, as: "categoria" },
       { model: Precio, as: "precio" },
     ],
+    order: [["updatedAt", "DESC"]],
   };
 
   try {
