@@ -78,7 +78,7 @@ __webpack_require__.r(__webpack_exports__);
       mostrarMensajeNoHayPropiedades();
       return;
     }
-    
+
     eliminarMensajeNoHayPropiedades();
 
     //creamos una instancia de limites vacia
@@ -114,15 +114,21 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function filtrarYMostrarPropiedades() {
-    const propiedadesFiltradas = propiedades.filter((propiedad) => {
-      return (
-        (!filtros.categoriaId ||
-          propiedad.categoria.id === filtros.categoriaId) &&
-        (!filtros.precioId || propiedad.precio.id === filtros.precioId)
-      );
-    });
+    const propiedadesFiltradas = propiedades
+      .filter(filtroCategoria)
+      .filter(filtroPrecio);
 
     mostrarPinesPropiedades(propiedadesFiltradas);
+  }
+
+  function filtroCategoria(propiedad) {
+    return (
+      !filtros.categoriaId || propiedad.categoria.id === filtros.categoriaId
+    );
+  }
+
+  function filtroPrecio(propiedad) {
+    return !filtros.precioId || propiedad.precio.id === filtros.precioId;
   }
 
   function mostrarMensajeNoHayPropiedades() {
