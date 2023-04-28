@@ -49,7 +49,7 @@
         console.log(error);
       });
   }
-
+    
   function mostrarPinesPropiedades(propiedades) {
     if (propiedades.length === 0) {
       mostrarMensajeNoHayPropiedades();

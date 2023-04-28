@@ -357,12 +357,13 @@ const propiedadPublic = async (req, res) => {
   const propiedad = await getPublicPropertyData(propiedadId);
 
   if (!propiedad) {
-    res.redirect("/auth/login");
+    res.redirect("/404");
   }
 
   res.render("propiedades/propiedadInfoPublic", {
     propiedad,
     pagina: propiedad.titulo,
+    csrfToken: req.csrfToken(),
   });
 };
 

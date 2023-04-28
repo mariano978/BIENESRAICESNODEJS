@@ -14,6 +14,6 @@ router.get("/404", errorPage);
 
 router.get("/categorias/:id", categoriasPage);
 
-router.get("/find", buscador);
+router.post("/find", buscador);
 
 export default router;

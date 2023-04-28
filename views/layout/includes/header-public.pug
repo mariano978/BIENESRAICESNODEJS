@@ -1,3 +1,6 @@
+block styles 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 header(class=" bg-zinc-900")
     .container.mx-auto.flex.justify-between.items-center
         a(href="/")
@@ -9,10 +12,16 @@ header(class=" bg-zinc-900")
             a(href="/auth/login" class=" hover:text-green-300") Iniciar Sesion
 
 div(class="bg-green-300 hidden lg:block")
-    div(class="container mx-auto flex justify-evenly ")
-        a(href="/categorias/1" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Casas
-        a(href="/categorias/2" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Departamentos
-        a(href="/categorias/3" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Monoambientes
-        a(href="/categorias/4" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Almacenes
-        a(href="/categorias/5" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Terrenos
-        a(href="/categorias/6" class="text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Cabañas
+    div(class="container mx-auto flex justify-between ")
+        nav(class="flex gap-4")
+            a(href="/categorias/1" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Casas
+            a(href="/categorias/2" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Departamentos
+            a(href="/categorias/3" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Monoambientes
+            a(href="/categorias/4" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Almacenes
+            a(href="/categorias/5" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Terrenos
+            a(href="/categorias/6" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Cabañas
+        form(action="/find" method="POST" class="flex gap-3 items-center")
+            input(type="hidden" name="_csrf" value= csrfToken)
+            label(for="termino" class="text-zinc-500 hover:cursor-pointer")
+                <i class="fa-solid fa-magnifying-glass"></i>
+            input(type="text" id="termino" class=" rounded-xl px-3 py-1 text-zinc-700" name="termino" placeholder="Busca una propiedad...") 

@@ -20,7 +20,7 @@ class Paginacion {
   }
 
   setCurrentPage(numberPage) {
-    this.currentPageNumber = numberPage;
+    this.currentPageNumber = numberPage ? numberPage : 1;
     this.calculateOffset();
   }
 

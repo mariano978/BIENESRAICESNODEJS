@@ -72,7 +72,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
   }
-
+    
   function mostrarPinesPropiedades(propiedades) {
     if (propiedades.length === 0) {
       mostrarMensajeNoHayPropiedades();
