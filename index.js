@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 //habilitar CSRF
 app.use(csrf({ cookie: true }));
-
+  
 //conexion a la base de datos
 try {
   await db.authenticate();
@@ -38,7 +38,7 @@ try {
 //Habilitar pug
 app.set("view engine", "pug");
 //seteamos las carpeta de las vistas
-app.set("vies", "./views");
+app.set("views", "./views");
 
 //carpeta publica
 app.use(express.static("public"));

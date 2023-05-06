@@ -12,7 +12,7 @@ router.get("/", index);
 
 router.get("/404", errorPage);
 
-router.get("/categorias/:id", categoriasPage);
+router.get("/categorias/:id" ,categoriasPage);
 
 router.post("/find", buscador);
 

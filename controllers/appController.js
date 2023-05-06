@@ -62,7 +62,7 @@ function getLastDepartamentos() {
 
 const categoriasPage = async (req, res) => {
   const { id } = req.params;
-
+  const { usuario } = res;
   const categoria = await Categoria.findByPk(id);
 
   if (!categoria) {
@@ -96,6 +96,7 @@ const categoriasPage = async (req, res) => {
     offset: paginacion.getOffset(),
     cantPropiedades,
     csrfToken: req.csrfToken(),
+    usuario,
   });
 };
 
@@ -151,13 +152,17 @@ const buscador = async (req, res) => {
   const propiedades = await Propiedad.findAll({
     where: {
       titulo: {
-        [Sequelize.Op.like]: "%" + termino + "%", 
+        [Sequelize.Op.like]: "%" + termino + "%",
       },
     },
     include: [{ model: Precio, as: "precio" }],
   });
 
-  console.log(propiedades);
+  res.render("busqueda", {
+    pagina: `Resultados para: ${termino}`,
+    propiedades,
+    csrfToken: req.csrfToken(),
+  });
 };
 
 export { index, categoriasPage, errorPage, buscador };

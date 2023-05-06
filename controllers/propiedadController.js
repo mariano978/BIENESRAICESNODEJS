@@ -1,10 +1,10 @@
-import { Propiedad, Categoria, Precio } from "../models/Index.js";
+import { Propiedad, Categoria, Precio, Mensaje } from "../models/Index.js";
 import { chalk, stringObj } from "../helpers/logs.js";
 import { check, validationResult } from "express-validator";
 import { unlink } from "node:fs/promises";
 import Paginacion from "../helpers/Paginacion.js";
-
-const log = console.log;
+import { esVendedor } from "../helpers/index.js";
+import { generarId } from "../helpers/tokens.js";
 
 const admin = async (req, res) => {
   const { id: userId } = req.usuario;
@@ -43,6 +43,7 @@ const findUserPropertiesByPage = async (userId, paginator) => {
     include: [
       { model: Categoria, as: "categoria" },
       { model: Precio, as: "precio" },
+      { model: Mensaje, as: "mensajes" },
     ],
     order: [["updatedAt", "DESC"]],
   };
@@ -360,10 +361,15 @@ const propiedadPublic = async (req, res) => {
     res.redirect("/404");
   }
 
+  res.cookie("_mensajeEnviado", generarId());
+
   res.render("propiedades/propiedadInfoPublic", {
     propiedad,
     pagina: propiedad.titulo,
     csrfToken: req.csrfToken(),
+    esVendedor: esVendedor(req.usuario?.id, propiedad.usuarioId),
+    usuario: req.usuario,
+    errores: [],
   });
 };
 
@@ -379,6 +385,80 @@ const getPublicPropertyData = async (propiedadId) => {
   return propiedad;
 };
 
+const enviarMensaje = async (req, res) => {
+  const mensajeEnviado = req.cookies._mensajeEnviado;
+
+  if (!mensajeEnviado) {
+    //si llegamos aca el mensaje ya se envio ya que no existe la cookie
+    return res.redirect("/");
+  }
+
+  const propiedadId = req.params.id;
+
+  const propiedad = await getPublicPropertyData(propiedadId);
+
+  if (!propiedad) {
+    res.redirect("/404");
+  }
+
+  const errores = validationResult(req);
+  let enviado = false;
+  if (errores.isEmpty() && mensajeEnviado) {
+    await almacenarMensajeDeUsuarioParaPropiedad(
+      req.body.mensaje,
+      req.usuario.id,
+      propiedadId
+    );
+    enviado = true;
+    res.clearCookie("_mensajeEnviado");
+  }
+
+  res.render("propiedades/propiedadInfoPublic", {
+    propiedad,
+    pagina: propiedad.titulo,
+    csrfToken: req.csrfToken(),
+    esVendedor: esVendedor(req.usuario?.id, propiedad.usuarioId),
+    usuario: req.usuario,
+    errores: errores.array(),
+    enviado,
+  });
+};
+
+async function almacenarMensajeDeUsuarioParaPropiedad(
+  mensaje,
+  usuarioId,
+  propiedadId
+) {
+  await Mensaje.create({
+    mensaje,
+    usuarioId,
+    propiedadId,
+  });
+  return;
+}
+
+const veerMensajes = async (req, res) => {
+  const { id: propiedadId } = req.params;
+
+  const propiedad = await Propiedad.findByPk(propiedadId, {
+    include: [{ model: Mensaje, as: "mensajes" }],
+  });
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  if (propiedad.usuarioId !== req.usuario.id) {
+    return res.redirect("/mis-propiedades");
+  }
+  console.log(chalk.red(stringObj(propiedad.mensajes)));
+
+  res.render("propiedades/mensajes", {
+    pagina: "Mensajes",
+    mensajes: propiedad.mensajes,
+  });
+};
+
 export {
   admin,
   formularioCrear,
@@ -390,4 +470,6 @@ export {
   validarFormPropiedad,
   eliminarPropiedad,
   propiedadPublic,
+  enviarMensaje,
+  veerMensajes,
 };

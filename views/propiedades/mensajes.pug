@@ -1,0 +1,15 @@
+
+extends ../layout/admin
+
+block styles
+
+block contenido
+    div(class=" container p-5")
+        h2.text-center.text-2xl.font-extrabold.text-zinc-800.mt-5= pagina
+        a(href="/mis-propiedades" class="text-zinc-800 bg-green-400 px-2 py-1 font-bold rounded") Volver
+
+        div(class="mx-auto max-w-6xl bg-zinc-50 shadow p-10")
+            if mensajes.length 
+                
+            else 
+                p(class="font-bold text-zinc-700") No tienes mensajes.

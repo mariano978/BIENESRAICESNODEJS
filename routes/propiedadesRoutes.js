@@ -10,9 +10,13 @@ import {
   validarFormPropiedad,
   eliminarPropiedad,
   propiedadPublic,
+  enviarMensaje,
+  veerMensajes,
 } from "../controllers/propiedadController.js";
 import protegerRuta from "../middleware/protegerRuta.js";
 import upload from "../middleware/subirImagen.js";
+import { identificarUsuario } from "../middleware/identificarUsuario.js";
+import { body } from "express-validator";
 
 const router = express.Router();
 
@@ -38,7 +42,18 @@ router.post(
 router.post("/propiedad/eliminar/:id", protegerRuta, eliminarPropiedad);
 
 //Area publica
-router.get('/propiedad/:id',propiedadPublic)
+router.get("/propiedad/:id", identificarUsuario, propiedadPublic);
 
+//almacenar mensaje
+router.post(
+  "/propiedad/:id",
+  identificarUsuario,
+  body("mensaje")
+    .isLength({ min: 10, max: 200 })
+    .withMessage("El mensaje debe tener etre 10 y 200 caracteres"),
+  enviarMensaje
+);
+
+router.get("/mensajes/:id", protegerRuta, veerMensajes);
 
 export default router;

@@ -13,7 +13,7 @@ block contenido
             a(href="" class="font-bold text-zinc-600 text-sm") Categoria:
                 span(class="font-normal")= propiedad.categoria.nombre
 
-        div(class="lg:flex gap-6 mt-2")
+        div(class="lg:flex gap-6 mt-2 md:items-start")
             div(class="lg:w-2/3 bg-zinc-50 shadow rounded-md")  
                 img(src=`/uploads/${propiedad.imagen}`, alt="imagen_propiedad")
                 .px-10.py-10.space-y-5     
@@ -29,12 +29,34 @@ block contenido
                         p(class=" text-zinc-400 font-bold tracking-wider text-xs" ) Precio 
                             span(class="block font-extrabold text-zinc-800 text-lg")= propiedad.precio.nombre
 
-            div(class="lg:w-1/3 mt-0")
+            aside(class="lg:w-1/3 mt-0 bg-zinc-50 shadow rounded-md p-3")
                 h3(class=" text-center font-bold text-zinc-800 text-2xl") Ubicacion
                 #mapa.h-96.rounded-xl.border-1.border-zinc-800
                 p(class="hidden" id="coordenadas")= propiedad.coordenadas
                 p(class="text-zinc-400 font-bold tracking-wider text-xs") Dirección
                     span(class="text-zinc-800 text-lg block font-extrabold")= propiedad.calle
+
+                if !esVendedor  
+                    if enviado 
+                        p(class="text-zinc-900 bg-green-300 mt-5 text-center mb-5 rounded text-sm font-bold shadow p-2 ") Mensaje enviado con exito
+                    
+                    else if !usuario
+                        div(class="flex gap-2 mt-10 mb-5 first-letter:justify-center")
+                            p.text-zinc-400 Si deseas contactar al vendedor 
+                                a(class=" text-green-400 hover:text-green-500 cursor-pointer" href="/auth/login") crea una cuenta o inicia sesion.        
+                    else 
+
+
+                        form(method="POST" action=`/propiedad/${propiedad.id}`)
+                            input(type="hidden" name="_csrf" value= csrfToken)
+                            div(class="mt-10")
+                                each error in errores
+                                    p(class="text-zinc-50 bg-red-400 mt-5 text-center mb-5 rounded text-sm font-bold shadow p-2")= error.msg
+                                label(for="mensaje" class="text-sm text-zinc-500") Enviale un mensaje al vendedor
+                                textarea(class="w-full mt-1 py-2 border border-gray-300 rounded-lg shadow p-2 placeholder-gray-400 " id="mensaje" name="mensaje" placeholder="Enviale tus datos al vendedor para que se contacte contigo...")
+                            input(type="submit" value="Enviar mensaje" class="mt-2 block cursor-pointer hover:text-zinc-900 bg-green-400 text-zinc-700 rounded-sm hover:bg-green-500 text-center py-1 px-2")
+
+
 
 block scripts
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>

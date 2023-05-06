@@ -1,0 +1,15 @@
+extends ./layout/public
+
+block contenido
+    section(class="space-y-4 mt-5")
+        h2(class="text-center font-bold text-2xl")= pagina
+
+        if propiedades.length
+            div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5")
+                each propiedad in propiedades 
+                    include ./templates/cardInicio
+        else    
+            p(class="text-center text-zinc-400") No hay resultados
+
+
+
