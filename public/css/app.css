@@ -501,9 +501,6 @@ video {
     max-width: 1536px;
   }
 }
-.pointer-events-none {
-  pointer-events: none;
-}
 .relative {
   position: relative;
 }
@@ -526,6 +523,10 @@ video {
   margin-top: 1.25rem;
   margin-bottom: 1.25rem;
 }
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -537,6 +538,9 @@ video {
 }
 .mb-5 {
   margin-bottom: 1.25rem;
+}
+.mr-2 {
+  margin-right: 0.5rem;
 }
 .mt-0 {
   margin-top: 0px;
@@ -561,12 +565,6 @@ video {
 }
 .mt-8 {
   margin-top: 2rem;
-}
-.mb-1 {
-  margin-bottom: 0.25rem;
-}
-.mr-2 {
-  margin-right: 0.5rem;
 }
 .block {
   display: block;
@@ -617,11 +615,11 @@ video {
 .max-w-3xl {
   max-width: 48rem;
 }
-.max-w-md {
-  max-width: 28rem;
-}
 .max-w-6xl {
   max-width: 72rem;
+}
+.max-w-md {
+  max-width: 28rem;
 }
 .flex-1 {
   flex: 1 1 0%;
@@ -641,14 +639,14 @@ video {
 .items-center {
   align-items: center;
 }
-.justify-center {
-  justify-content: center;
-}
 .justify-between {
   justify-content: space-between;
 }
 .justify-items-start {
   justify-items: start;
+}
+.gap-1 {
+  gap: 0.25rem;
 }
 .gap-10 {
   gap: 2.5rem;
@@ -667,9 +665,6 @@ video {
 }
 .gap-6 {
   gap: 1.5rem;
-}
-.gap-1 {
-  gap: 0.25rem;
 }
 .space-y-0 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
@@ -768,6 +763,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(254 202 202 / var(--tw-bg-opacity));
 }
+.bg-red-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 113 113 / var(--tw-bg-opacity));
+}
 .bg-red-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(239 68 68 / var(--tw-bg-opacity));
@@ -796,17 +795,12 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
 }
-.bg-red-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
-}
-.bg-red-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(248 113 113 / var(--tw-bg-opacity));
-}
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
+}
+.p-10 {
+  padding: 2.5rem;
 }
 .p-2 {
   padding: 0.5rem;
@@ -814,14 +808,14 @@ video {
 .p-3 {
   padding: 0.75rem;
 }
-.p-6 {
-  padding: 1.5rem;
-}
 .p-5 {
   padding: 1.25rem;
 }
-.p-10 {
-  padding: 2.5rem;
+.p-6 {
+  padding: 1.5rem;
+}
+.p-1 {
+  padding: 0.25rem;
 }
 .px-10 {
   padding-left: 2.5rem;
@@ -942,6 +936,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(99 102 241 / var(--tw-text-opacity));
 }
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
+}
 .text-red-600 {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
@@ -949,6 +947,10 @@ video {
 .text-slate-900 {
   --tw-text-opacity: 1;
   color: rgb(15 23 42 / var(--tw-text-opacity));
+}
+.text-yellow-500 {
+  --tw-text-opacity: 1;
+  color: rgb(234 179 8 / var(--tw-text-opacity));
 }
 .text-yellow-600 {
   --tw-text-opacity: 1;
@@ -982,14 +984,6 @@ video {
   --tw-text-opacity: 1;
   color: rgb(24 24 27 / var(--tw-text-opacity));
 }
-.text-yellow-500 {
-  --tw-text-opacity: 1;
-  color: rgb(234 179 8 / var(--tw-text-opacity));
-}
-.text-red-500 {
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
-}
 .placeholder-gray-400::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
@@ -1005,9 +999,6 @@ video {
 .placeholder-gray-700::placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(55 65 81 / var(--tw-placeholder-opacity));
-}
-.opacity-0 {
-  opacity: 0;
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -1085,11 +1076,6 @@ div.leaflet-control-container > div.leaflet-bottom.leaflet-left > div > div {
   border-color: rgb(212 212 216 / var(--tw-border-opacity));
 }
 
-.hover\:bg-blue-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-green-400:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
@@ -1133,10 +1119,6 @@ div.leaflet-control-container > div.leaflet-bottom.leaflet-left > div > div {
 
   .sm\:flex {
     display: flex;
-  }
-
-  .sm\:hidden {
-    display: none;
   }
 
   .sm\:w-1\/4 {

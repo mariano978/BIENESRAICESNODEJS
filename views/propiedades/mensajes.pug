@@ -8,8 +8,17 @@ block contenido
         h2.text-center.text-2xl.font-extrabold.text-zinc-800.mt-5= pagina
         a(href="/mis-propiedades" class="text-zinc-800 bg-green-400 px-2 py-1 font-bold rounded") Volver
 
-        div(class="mx-auto max-w-6xl bg-zinc-50 shadow p-10")
-            if mensajes.length 
-                
-            else 
-                p(class="font-bold text-zinc-700") No tienes mensajes.
+
+        if mensajes.length 
+            each mensaje in mensajes
+                div(class="mx-auto max-w-6xl bg-zinc-50 shadow p-3 rounded mt-2")
+                    p(class-="text-zinc-700 text-md font-bold")= `${mensaje.usuario.nombre} - ${mensaje.usuario.email}`
+                    p(class=" text-zinc-700 text-md ")= mensaje.mensaje
+                    p(class=" text-zinc-400 text-md mt-2")= formatearFecha(mensaje.createdAt)
+
+        else 
+            p(class="font-bold text-zinc-700") No tienes mensajes.
+
+
+
+

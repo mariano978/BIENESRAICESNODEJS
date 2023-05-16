@@ -1,9 +1,15 @@
-import { Propiedad, Categoria, Precio, Mensaje } from "../models/Index.js";
+import {
+  Propiedad,
+  Categoria,
+  Precio,
+  Mensaje,
+  Usuario,
+} from "../models/Index.js";
 import { chalk, stringObj } from "../helpers/logs.js";
 import { check, validationResult } from "express-validator";
 import { unlink } from "node:fs/promises";
 import Paginacion from "../helpers/Paginacion.js";
-import { esVendedor } from "../helpers/index.js";
+import { esVendedor, formatearFecha } from "../helpers/index.js";
 import { generarId } from "../helpers/tokens.js";
 
 const admin = async (req, res) => {
@@ -441,7 +447,18 @@ const veerMensajes = async (req, res) => {
   const { id: propiedadId } = req.params;
 
   const propiedad = await Propiedad.findByPk(propiedadId, {
-    include: [{ model: Mensaje, as: "mensajes" }],
+    include: [
+      {
+        model: Mensaje,
+        as: "mensajes",
+        include: [
+          {
+            model: Usuario.scope("eliminarPassword"),
+            as: "usuario",
+          },
+        ],
+      },
+    ],
   });
 
   if (!propiedad) {
@@ -456,6 +473,7 @@ const veerMensajes = async (req, res) => {
   res.render("propiedades/mensajes", {
     pagina: "Mensajes",
     mensajes: propiedad.mensajes,
+    formatearFecha
   });
 };
 
