@@ -12,6 +12,7 @@ import {
   propiedadPublic,
   enviarMensaje,
   veerMensajes,
+  cambiarEstadoPropiedad,
 } from "../controllers/propiedadController.js";
 import protegerRuta from "../middleware/protegerRuta.js";
 import upload from "../middleware/subirImagen.js";
@@ -41,8 +42,9 @@ router.post(
 );
 router.post("/propiedad/eliminar/:id", protegerRuta, eliminarPropiedad);
 
-//Area publica
-router.get("/propiedad/:id", identificarUsuario, propiedadPublic);
+router.get("/mensajes/:id", protegerRuta, veerMensajes);
+
+router.put("/propiedades/:id", protegerRuta, cambiarEstadoPropiedad);
 
 //almacenar mensaje
 router.post(
@@ -54,6 +56,7 @@ router.post(
   enviarMensaje
 );
 
-router.get("/mensajes/:id", protegerRuta, veerMensajes);
+//Area publica
+router.get("/propiedad/:id", identificarUsuario, propiedadPublic);
 
 export default router;

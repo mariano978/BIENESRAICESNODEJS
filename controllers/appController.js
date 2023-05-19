@@ -21,6 +21,7 @@ const index = async (req, res) => {
     casas,
     departamentos,
     csrfToken: req.csrfToken(),
+    usuario: req.usuario,
   });
 };
 
@@ -36,6 +37,7 @@ function getLastCasas() {
   return Propiedad.findAll({
     where: {
       categoriaId: 1,
+      publicado: 1,
     },
     order: [["createdAt", "DESC"]],
     limit: 3,
@@ -50,6 +52,7 @@ function getLastDepartamentos() {
   return Propiedad.findAll({
     where: {
       categoriaId: 2,
+      publicado: 1,
     },
     order: [["createdAt", "DESC"]],
     limit: 3,
@@ -62,7 +65,7 @@ function getLastDepartamentos() {
 
 const categoriasPage = async (req, res) => {
   const { id } = req.params;
-  const { usuario } = res;
+  const { usuario } = req;
   const categoria = await Categoria.findByPk(id);
 
   if (!categoria) {
@@ -136,9 +139,10 @@ const countPropiedadesOfCategoria = async (categoriaId) => {
 };
 
 const errorPage = (req, res) => {
-  res.render("404", {
+  return res.render("404", {
     pagina: "No encontrada",
     csrfToken: req.csrfToken(),
+    usuario: req.usuario,
   });
 };
 
@@ -154,6 +158,7 @@ const buscador = async (req, res) => {
       titulo: {
         [Sequelize.Op.like]: "%" + termino + "%",
       },
+      publicado: 1,
     },
     include: [{ model: Precio, as: "precio" }],
   });
@@ -162,6 +167,7 @@ const buscador = async (req, res) => {
     pagina: `Resultados para: ${termino}`,
     propiedades,
     csrfToken: req.csrfToken(),
+    usuario: req.usuario,
   });
 };
 

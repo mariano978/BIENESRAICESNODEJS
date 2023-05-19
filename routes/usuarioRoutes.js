@@ -9,6 +9,7 @@ import {
   comprobarToken,
   nuevoPassword,
   autenticarLogin,
+  cerrarSesion,
 } from "../controllers/usuarioController.js";
 
 const router = express.Router();
@@ -16,6 +17,8 @@ const router = express.Router();
 //Cuentas
 router.get("/login", formularioLogin);
 router.post("/login", autenticarLogin);
+
+router.post("/cerrar-sesion", cerrarSesion);
 
 router.get("/registro", formularioRegistro);
 router.post("/registro", registrar);

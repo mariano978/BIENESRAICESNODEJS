@@ -2,6 +2,7 @@ extends ../layout/admin
 
 block styles 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    meta(name="csrf-token" content= csrfToken)
 
 block contenido
     div.py-5.mt-5
@@ -17,6 +18,7 @@ block contenido
                         div(class="bg-zinc-50 mt-2 border-zinc-400 border rounded-md p-6 w-full flex flex-col sm:flex-row sm:item-center sm:justify-between gap-4 space-y-8")    
                             div(class="sm:w-1/4 md:w-1/6")  
                                 img(src=`uploads/${propiedad.imagen}`, alt="imagen_propiedad" class="overflow-hidden w-full block rounded-md")
+                           
                             div(class="sm:w-2/4 md:w-3/6 lg:w-4/6 space-y-3") 
                                 a(href=`/propiedad/${propiedad.id}` class="block text-2xl font-extrabold text-zinc-500 truncate")= propiedad.titulo
                                 p(class="text-sm text-zinc-700 font-bold")= propiedad.categoria.nombre 
@@ -33,10 +35,9 @@ block contenido
                                             span(class="text-sm  text-red-500 cursor-pointer font-bold")= propiedad.mensajes.length
 
 
-                            div(class="sm:w-1/4 md:w-2/6 lg:flex-1 flex flex-col gap-2 lg:flex-row") 
-                                form(action="")
-                                    input(type="submit" class=`w-full p-2 md:py-1 text-xs leading-5 font-semibold rounded-sm cursor-pointer ${propiedad.publicado ? "bg-green-200 text-green-500" : "bg-yellow-200 text-yellow-600"}` value=`${propiedad.publicado ? "Publicado" : "No publicado"}`)  
-                                a(href=`/propiedad/editar/${propiedad.id}` class="text-center py-2 px-2 md:py-1 text-xs leading-5 font-semibold rounded-sm cursor-pointer bg-blue-200 text-blue-800 h-fit") Editar 
+                            div(class="sm:w-1/4 md:w-2/6 flex flex-col gap-2 lg:flex-row lg:items-start justify-end") 
+                                button(type="button" data-propiedad-id=`${propiedad.id}` id="btnPublicado" class=` p-2 md:py-1 text-xs leading-5 font-semibold rounded-sm cursor-pointer ${propiedad.publicado ? "bg-green-200 text-green-500" : "bg-yellow-200 text-yellow-600"}`)= `${propiedad.publicado ? "Publicado" : "No publicado"}` 
+                                a(href=`/propiedad/editar/${propiedad.id}` class=" text-center py-2 px-2 md:py-1 text-xs leading-5 font-semibold rounded-sm cursor-pointer bg-blue-200 text-blue-800 h-fit") Editar 
                                 form(action=`/propiedad/eliminar/${propiedad.id}` method="POST")
                                     input(type="hidden" name="_csrf" value= csrfToken)
                                     input(type="submit" class="w-full p-2 md:py-1 text-xs leading-5 font-semibold rounded-sm cursor-pointer bg-red-200 text-red-600" value="Eliminar")
@@ -55,3 +56,6 @@ block contenido
                                         a(href=`/mis-propiedades?pagina=${n}` class=`${currentPageNumber == n ? "bg-blue-50 border-indigo-400 text-indigo-500" : "hover:bg-zinc-100 hover:border-zinc-300 hover:text-zinc-900"} relative inline-flex items-center px-4 py-2 border text-sm font-medium`) #{n++}
         else 
             p.text-center No Hay Propiedades
+
+block scripts 
+    script(src="/js/cambiarEstadoPropiedad.js")

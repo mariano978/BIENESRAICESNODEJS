@@ -113,9 +113,6 @@ const guardar = async (req, res) => {
     });
   }
 
-  //si no hay errores...
-  console.log(req.body);
-
   const datos = {
     ...req.body,
     categoriaId: req.body.categoria,
@@ -125,8 +122,6 @@ const guardar = async (req, res) => {
   };
   delete datos.precio;
   delete datos.categoria;
-
-  console.log(datos);
 
   try {
     const propiedadGuardada = await Propiedad.create(datos);
@@ -192,9 +187,6 @@ const guardarImagen = async (req, res, next) => {
     log(chalk.red(`Propiedad no pertenece al usuario ${req.usuario.nombre}`));
     return res.redirect("/mis-propiedades");
   }
-
-  //ya podemos subir
-  console.log(chalk.red("Subiendo..."));
 
   try {
     propiedad.imagen = req.file.filename;
@@ -363,7 +355,7 @@ const propiedadPublic = async (req, res) => {
 
   const propiedad = await getPublicPropertyData(propiedadId);
 
-  if (!propiedad) {
+  if (!propiedad || !propiedad.publicado) {
     res.redirect("/404");
   }
 
@@ -468,12 +460,43 @@ const veerMensajes = async (req, res) => {
   if (propiedad.usuarioId !== req.usuario.id) {
     return res.redirect("/mis-propiedades");
   }
-  console.log(chalk.red(stringObj(propiedad.mensajes)));
 
   res.render("propiedades/mensajes", {
     pagina: "Mensajes",
     mensajes: propiedad.mensajes,
-    formatearFecha
+    formatearFecha,
+  });
+};
+
+const cambiarEstadoPropiedad = async (req, res) => {
+  const addressMain = "/mis-propiedades";
+  const currentPropetyId = req.params.id;
+  const currentUserId = req.usuario.id;
+
+  let resultado;
+
+  const propiedad = await getPropiedadById(
+    currentPropetyId,
+    currentUserId
+  ).catch((error) => {
+    console.log(error);
+    resultado = error;
+    res.redirect(addressMain);
+  });
+
+  console.log(propiedad);
+
+  await propiedad
+    .update({ publicado: !propiedad.publicado })
+    .then(() => {
+      resultado = "OK";
+    })
+    .catch((error) => {
+      resultado = error;
+    });
+
+  return res.json({
+    resultado,
   });
 };
 
@@ -490,4 +513,5 @@ export {
   propiedadPublic,
   enviarMensaje,
   veerMensajes,
+  cambiarEstadoPropiedad,
 };

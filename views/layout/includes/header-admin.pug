@@ -5,6 +5,7 @@ header(class=" bg-zinc-900 px-10")
                 span.font-normal Raices
 
         nav(class="my-5 text-sm md:flex md:items-center font-bold text-zinc-50 md:gap-3 hidden " )    
-            a(href="/mis-propiedades" class="hover:text-green-300") Mis Propiedades 
-            a(href="" class="hover:text-green-300") Mi Perfil 
-            a(href="" class="bg-zinc-800 p-2 rounded hover:text-red-500") Cerrar Sesion
+            a(href="/mis-propiedades" class="hover:text-green-300") Mis Propiedades
+            form(action="/auth/cerrar-sesion" method="POST")
+                input(type="hidden" name="_csrf" value= csrfToken) 
+                input(type="submit" class="bg-zinc-800 p-2 rounded cursor-pointer hover:text-red-500" value="Cerrar Sesion") 

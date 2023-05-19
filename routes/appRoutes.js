@@ -5,15 +5,16 @@ import {
   categoriasPage,
   buscador,
 } from "../controllers/appController.js";
+import { identificarUsuario } from "../middleware/identificarUsuario.js";
 
 const router = express.Router();
 
-router.get("/", index);
+router.get("/", identificarUsuario, index);
 
-router.get("/404", errorPage);
+router.get("/404", identificarUsuario, errorPage);
 
-router.get("/categorias/:id" ,categoriasPage);
+router.get("/categorias/:id", identificarUsuario, categoriasPage);
 
-router.post("/find", buscador);
+router.post("/find", identificarUsuario, buscador);
 
 export default router;
