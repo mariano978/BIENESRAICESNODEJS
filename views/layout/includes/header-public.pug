@@ -1,34 +1,46 @@
-block styles 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-header(class=" bg-zinc-900")
-    div(class="md:container md:mx-auto md:flex md:justify-between md:items-center")
-        a(href="/")
-            h1.text-2xl.text-zinc-50.font-extrabold.text-center Bienes
-                span.font-normal Raices
+header(class=" bg-zinc-900 transition-all")
+    div(class="md:container md:mx-auto flex md:flex-row flex-col md:justify-between justify-center items-center")
 
-        if usuario   
-            nav(class="flex md:gap-3 md:my-5 md:flex-row items-center flex-col text-sm font-bold text-zinc-50")
-                p(class=" font-semibold")= `Hola, ${usuario.nombre}`
-                form(action="/auth/cerrar-sesion" method="POST")
-                    input(type="hidden" name="_csrf" value= csrfToken) 
-                    input(type="submit" class="md:bg-zinc-800 p-2 rounded cursor-pointer hover:text-red-500" value="Cerrar Sesion") 
-        else
-            nav(class="my-5 text-sm md:flex md:items-center font-bold text-zinc-50 md:gap-3 hidden " )
-                a(href="/auth/registro" class="bg-zinc-800 p-2 rounded hover:text-green-300") Crear Cuenta
-                a(href="/auth/login" class=" hover:text-green-300") Iniciar Sesion
+        div(class="flex flex-row items-center justify-between w-[90%] m-auto py-5")
+            a(href="/")
+                h1.text-2xl.text-zinc-50.font-extrabold.text-center Bienes
+                    span.font-normal Raices
 
-div(class="bg-green-300 hidden lg:block")
-    div(class="container mx-auto flex justify-between ")
-        nav(class="flex gap-4")
-            a(href="/categorias/1" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Casas
-            a(href="/categorias/2" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Departamentos
-            a(href="/categorias/3" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Monoambientes
-            a(href="/categorias/4" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Almacenes
-            a(href="/categorias/5" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Terrenos
-            a(href="/categorias/6" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Cabañas
-        form(action="/find" method="POST" class="flex gap-3 items-center")
+            if usuario 
+                p(class=" font-semibold md:hidden text-zinc-50 block")= `Hola, ${usuario.nombre}`
+
+            div(class="flex items-center gap-5 md:hidden text-zinc-50")
+                <i id="lupa" class="fa-solid fa-magnifying-glass cursor-pointer"></i>
+                <i id="botonBurguer" class="fa-solid fa-bars cursor-pointer"></i>    
+
+        form(action="/find" method="POST" id="busquedaHeader" class=" hidden pb-3")
             input(type="hidden" name="_csrf" value= csrfToken)
-            label(for="termino" class="text-zinc-500 hover:cursor-pointer")
-                <i class="fa-solid fa-magnifying-glass"></i>
-            input(type="text" id="termino" class=" rounded-xl px-3 py-1 text-zinc-700" name="termino" placeholder="Busca una propiedad...") 
+            input(type="text" id="termino" class=" rounded-sm px-3 py-1 text-zinc-700" name="termino" placeholder="Busca una propiedad...") 
+
+        div(class="hidden md:block mb-4" id="menuOculto")
+            if usuario   
+                nav(class="flex md:gap-3 md:my-5 md:flex-row items-center flex-col text-sm font-bold text-zinc-50")
+                    p(class=" font-semibold hidden md:block flex-shrink-0")= `Hola, ${usuario.nombre}`
+                    form(action="/auth/cerrar-sesion" method="POST")
+                        input(type="hidden" name="_csrf" value= csrfToken) 
+                        input(type="submit" class="md:bg-zinc-800 p-2 rounded cursor-pointer hover:text-red-500" value="Cerrar Sesion") 
+            else
+                nav(class=" space-y-5 md:space-y-0 text-sm flex items-center font-bold text-zinc-50 md:gap-3 flex-col md:flex-row " )
+                    a(href="/auth/registro" class="bg-zinc-800 p-2 rounded hover:text-green-300 flex-shrink-0") Crear Cuenta
+                    a(href="/auth/login" class=" hover:text-green-300 flex-shrink-0") Iniciar Sesion
+
+    div(class="bg-green-300 hidden lg:block")
+        div(class="container mx-auto flex justify-between ")
+            nav(class="flex gap-4")
+                a(href="/categorias/1" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Casas
+                a(href="/categorias/2" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Departamentos
+                a(href="/categorias/3" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Monoambientes
+                a(href="/categorias/4" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Almacenes
+                a(href="/categorias/5" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Terrenos
+                a(href="/categorias/6" class=" px-3 text-sm font-bold uppercase text-zinc-700 py-5 flex-1 text-center  hover:bg-green-400 ") Cabañas
+            form(action="/find" method="POST" class="flex gap-3 items-center")
+                input(type="hidden" name="_csrf" value= csrfToken)
+                label(for="termino" class="text-zinc-500 hover:cursor-pointer")
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                input(type="text" id="termino" class=" rounded-xl px-3 py-1 text-zinc-700" name="termino" placeholder="Busca una propiedad...") 

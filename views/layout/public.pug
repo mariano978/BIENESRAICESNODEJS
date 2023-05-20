@@ -6,6 +6,8 @@ html(lang="en")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         title Bienes Raices | #{pagina}
         link(rel="stylesheet" href="/css/app.css") 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
         block styles
     body.min-h-screen.bg-zinc-100
     include includes/header-public
@@ -14,3 +16,4 @@ html(lang="en")
         block contenido
 
     block scripts  
+    script(src="/js/menuBurguer.js")

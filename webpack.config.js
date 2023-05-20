@@ -8,7 +8,8 @@ export default {
     imagenes: "./src/js/imagenes.js",
     mapaFijo: "./src/js/mapaFijo.js",
     inicio: "./src/js/inicio.js",
-    cambiarEstadoPropiedad: "./src/js/cambiarEstadoPropiedad.js"
+    cambiarEstadoPropiedad: "./src/js/cambiarEstadoPropiedad.js",
+    menuBurguer: "./src/js/menuBurguer.js"
   },
   output: {
     path: path.resolve("public/js"),
